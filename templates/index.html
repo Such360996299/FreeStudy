@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}首页-FreeStudy{% endblock %}
+{% block content %}
+    <div class="banner">
+			<div class="wp banner_wp">
+				<div class="fl">
+					<div class="imgslide">
+						<ul class="imgs">
+                            {% for banner in banners %}
+                            <li class="banner_li">
+                                    <a href="{{ banner.url }}">
+                                        <img width="100%" height="478" src="{{ banner.image.url }}" />
+                                    </a>
+                                </li>
+                            {% endfor %}
+						</ul>
+					</div>
+					<div class="unslider-arrow prev"></div>
+					<div class="unslider-arrow next"></div>
+				</div>
+
+				</div>
+
+
+			</div>
+	<section>
+        <div class="module greybg">
+		<div class="wp_tag">
+			<ul class="feature">
+				<li class="feature1">
+					<img class="pic" src="/static/images/feature1.png"/>
+					<p class="center">专业权威</p>
+				</li>
+				<li class="feature2">
+					<img class="pic" src="/static/images/feature2.png"/>
+					<p class="center">课程丰富</p>
+				</li>
+				<li class="feature3">
+					<img class="pic" src="/static/images/feature3.png"/>
+					<p class="center">高效学习</p>
+				</li>
+				<li class="feature4">
+					<img class="pic" src="/static/images/feature4.png"/>
+					<p class="center">认证机构</p>
+				</li>
+			</ul>
+		</div>
+        </div>
+
+	</section>
+	<section>
+		<div class="module greybg">
+			<div class="wp inc_wp">
+				<h1>公开课程</h1>
+				<div class="module1 eachmod">
+					<div class="module1_1 left">
+						<img width="100%" height="614" src="{% static 'images/module1_1.jpg' %}"/>
+						<p class="fisrt_word">课程公开<br/>专业权威</p>
+						<a class="more1" href="{% url 'course:list' %}">查看更多课程 ></a>
+					</div>
+					<div class="right group_list">
+						<div class="module1_2 box">
+							<div class="imgslide2">
+								<ul class="imgs">
+                                    {% for banner_course in banner_courses %}
+                                    <li class="banner_li2">
+                                        <a href="{% url 'course:detail' banner_course.id %}">
+                                            <img width="100%" height="100%" src="{{ banner_course.image.url }}" />
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+								</ul>
+							</div>
+							<div class="unslider-arrow2 prev"></div>
+							<div class="unslider-arrow2 next"></div>
+						</div>
+                            {% for course in courses %}
+                            <div class="module1_{{ forloop.counter|add:2 }} box">
+                                <a href="{% url 'course:detail' course.id %}">
+                                    <img width="100%" height="190" src="{{ course.image.url }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'course:detail' course.id %}">
+                                        <h2 title="{{ course.name }}">{{ course.name }}</h2>
+                                    </a>
+                                    <span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
+                                    <span class="fr">学习人数：{{ course.students }}</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl" title="FreeStudy">{{ course.course_org.name }}</span>
+                                    <span class="star fr">{{ course.fav_nums }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="module greybg">
+			<div class="wp inc_wp">
+				<h1>课程机构</h1>
+				<div class="module3 eachmod">
+					<div class="module3_1 left">
+						<img width="100%" height="100%" src="{% static 'images/module3_1.jpg' %}"/>
+						<p class="fisrt_word">名校来袭<br/>权威认证</p>
+						<a class="more" href="{% url 'org:list' %}">查看更多机构 ></a>
+					</div>
+					<div class="right">
+						<ul>
+                            {% for org in course_orgs %}
+                                <li class="{% if forloop.counter|divisibleby:5 %}five{% endif %}">
+                                    <a href="{% url 'org:home' org.id %}">
+                                        <div class="company">
+                                            <img width="100%" height="100" src="{{ org.image.url }}"/>
+                                            <div class="score">
+                                                <div class="circle">
+                                                    <h2>{{ org.tag }}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p><span class="key" title="{{ org.name }}">{{ org.name }}</span></p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+    <section>
+		<div class="module greybg">
+			<div class="wp inc_wp">
+				<h1>热门讲师</h1>
+				<div class="module3 eachmod">
+					<div class="module3_1 left">
+						<img width="100%" height="463" src="{% static 'images/module2_1.jpg' %}"/>
+						<p class="fisrt_word">名师加盟<br/>专业指导</p>
+						<a class="more" href="{% url 'org:teachers' %}">查看更多讲师 ></a>
+					</div>
+					<div class="right">
+						<ul>
+                            {% for teacher in teachers %}
+                                <li class="{% if forloop.counter|divisibleby:5 %}five{% endif %}">
+                                    <a href="{% url 'org:teacher_detail' teacher.id %}">
+                                        <div class="company" style="border-radius: 10px">
+                                            <img width="100%" height="100" style="border-radius: 10px" src="{{ teacher.image.url }}"/>
+                                            <div class="score" style="border-radius: 10px; line-height: 100px;">
+                                                    <h2>{{ teacher.org }}</h2>
+                                            </div>
+                                        </div>
+                                        <p><span class="key" title="{{ teacher.name }}">{{ teacher.name }}</span></p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+{% block custom_js %}
+    <script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
+    <script src="{% static 'js/deco-common.js' %}" type='text/javascript'></script>
+    <script type="text/javascript" src="{% static 'js/plugins/laydate/laydate.js' %}"></script>
+    <script src="{% static  'js/plugins/layer/layer.js' %}"></script>
+    <script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/plugins/jquery.scrollLoading.js' %}"  type="text/javascript"></script>
+    <script src="{% static 'js/deco-common.js' %}"  type="text/javascript"></script>
+
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+
+    <script type="text/javascript">
+    //适应手机端
+    function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+var flag = IsPC(); //true为PC端，false为手机端
+$(function () {
+    var fisrt_word = $('.fisrt_word');
+    var more1 = $('.more1');
+    var fea_pic = $('.feature .pic');
+    var module3_box = $('.group_list .box');
+    var module1_2 = $('.module1_2');
+    var module1_3 = $('.module3 li');
+    var modulebox_img = $('.module .box img');
+    var groupdes_h2 = $('.group_list .des h2');
+    var groupdes_fr = $('.group_list .des .fr');
+    var grouplist_fl = $('.group_list .bottom .fl');
+    var grouplist_fr = $('.group_list .bottom .fr');
+    var inc_wp = $('.inc_wp');
+    var banner_wp = $('.banner_wp');
+    var imgslide = $('.imgslide');
+    var banner_li = $('.banner_li');
+    var li_length = $(".banner_wp .imgs li").length;   //imgs标签的宽度是li标签个数X100%
+    var banner_li_width = ''+((1/li_length)*100)+'%';  //所以这里的li标签宽度不能直接设置成100%，不然就是imgs标签的宽度了(巨大化）
+    var imgslide2 = $('.imgslide2');
+    var banner_li2 = $('.banner_li2');
+    var li_length2 = $(".imgslide2 li").length;
+    var banner_li_width2 = ''+((1/li_length2)*100)+'%';
+    if (!flag) {
+        fisrt_word.css('font-size','18px');
+        fisrt_word.css('line-height','25px');
+        fisrt_word.css('top','40px');
+        more1.css('top','250px');
+        fea_pic.css('left','36.5%');
+        module3_box.css('width','22.2%');
+        module1_2.css('cssText','width:49.4% !important');
+        module1_3.css('width','17.8%');
+        modulebox_img.css('height','60%');
+        groupdes_h2.css('font-size','8px');
+        groupdes_fr.css('bottom','-15px');
+        grouplist_fl.css('width','48%');
+        grouplist_fr.css('width','52%');
+        inc_wp.css('width','95%');
+        banner_wp.css('width','95%');
+        imgslide.css('width','100%');
+        banner_li.css('width',banner_li_width);
+        imgslide2.css('width','100%');
+        banner_li2.css('width',banner_li_width2);
+    }
+})
+    </script>
+{% endblock %}
