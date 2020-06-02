@@ -1,3 +1,5 @@
+FreeStudy共享学习平台
+
 使用技术：Python3.6.2、Django2.2、HTML、CSS、JS、JQuery
 后台管理系统：Xadmin
 服务器部署：Docker+Uwsgi+Nginx+Redis+mariadb
