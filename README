@@ -1,0 +1,6 @@
+使用技术：Python3.6.2、Django2.2、HTML、CSS、JS、JQuery
+后台管理系统：Xadmin
+服务器部署：Docker+Uwsgi+Nginx+Redis+mariadb
+数据库可通过本地Navicat连接服务器Docker容器，实现访问
+
+欢迎访问体验：http://118.24.108.199
