@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}课程详情-FreeStudy{% endblock %}
+{% block custom_bread %}
+<section>
+    <div class="wp codetail_wp">
+        <ul  class="crumbs">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'course:list' %}">公开课</a>></li>
+            <li>课程详情</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+{% block content %}
+    <section>
+	<div class="wp coursede_wp">
+		<div class="groupPurchase_detail detail">
+			<div class="toppro">
+				<div class="left">
+					<div class="picbox">
+						<div class="tb-booth tb-pic">
+							<img width="100%" height="100%" src="{{ course.image.url }}" class="jqzoom" />
+						</div>
+
+					</div>
+					<div class="des">
+						<h1>{{ course.name }}</h1>
+						<span class="key">{{ course.desc }}</span>
+						<div class="prize">
+							<span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
+							<span class="fr">学习人数：{{ course.students }}</span>
+						</div>
+						<ul class="parameter">
+							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：</span><span>{{ course.learn_times }}</span>分钟</li>
+                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.lesson_nums }}</span></li>
+                            <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
+							<li class="piclist"><span class="pram word4">学习用户：</span>
+                                {% for user_course in course.usercourse_set.all|slice:3 %}
+                                    <span class="pic"><img width="40" height="40" src="{{ user_course.user.image.url }}"/></span>
+                                {% endfor %}
+							</li>
+						</ul>
+						<div class="btns">
+							<div class="btn colectgroupbtn"  id="jsLeftBtn">
+                                  {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
+                            </div>
+                                <div class="buy btn"><a style="color: white" href="{% url 'course:lesson' course.id %}">开始学习</a></div>
+						</div>
+					</div>
+                    <div class="group-share-box">
+                        <div class="bdsharebuttonbox"
+                             data-text="《{{ course.name }}》-FreeStudy"
+                             data-desc="我在#FreeStudy#发现了课程：《{{ course.name }}》"
+                             data-comment="课程机构：{{ course.course_org }},讲师：{{ course.teacher }},{{ course.students }}人在学该课程！课程描述：{{ course.desc }}"
+                             data-url="{% url 'course:detail' course.id %}">
+                            <span class="fl">分享到：</span>
+                            <a href="#" class="bds_more" data-cmd="more"></a>
+                        </div>
+                    </div>
+				</div>
+				<div class="right">
+					<div class="head">
+						<h1>授课机构</h1>
+						<p>世界名校，课程权威</p>
+					</div>
+					<div class="pic">
+                        <a href="{% url 'org:home' course.course_org.id %}">
+                            <img width="150" height="80" src="{{ course.course_org.image.url }}"/>
+                        </a>
+                    </div>
+					<a href="{% url 'org:home' course.course_org.id %}">
+                        <h2 class="center" title="{{ course.course_org.name }}">{{ course.course_org.name }}</h2>
+                    </a>
+					<div class="btn notlogin" data-favid="14" id="jsRightBtn">
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
+                    </div>
+					<div class="clear">
+						<ul>
+                            <li>
+                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ course.course_org.course_set.all.count }}</span>
+                            </li>
+                            <li>
+                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{ course.course_org.teacher_set.all.count }}</span>
+                            </li>
+							<li>所在地区：&nbsp;&nbsp;{{ course.course_org.address }}</li>
+                            {% if course.course_org.is_gold %}
+							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
+								    <img title="金牌机构", src="{% static 'images/gold.png' %}"/>
+							</li>
+                            {% endif %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+    <section>
+	<div class="wp courseco_wp">
+		<div class="list groupPurchase_detail_pro">
+			<div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active">课程详情</li>
+					</ul>
+				</div>
+				<div class="tab_cont tab_cont1">
+                    {% autoescape off %}{{ course.detail }} {% endautoescape %}
+				</div>
+				<div class="tab_cont tab_cont2" >
+					<div class="comment">
+						<div class="comenlist">
+
+	                    </div>
+					</div>
+				</div>
+			</div>
+			<div class="right layout">
+				<div class="head">相关课程推荐</div>
+                <div class="group_recommend">
+                    {% for course in related_courses %}
+                        <dl>
+                            <dt>
+                                <a target="_blank" href="{% url 'course:detail' course.id %}">
+                                    <img width="240" height="220" class="scrollLoading" src="{{ course.image.url }}"/>
+                                </a>
+                            </dt>
+                            <dd>
+                                <a target="_blank" href=""><h2> {{ course.name }}</h2></a>
+                                <span class="fl">学习时长：<i class="key">{{ course.learn_times }}分钟</i></span>
+                            </dd>
+                        </dl>
+                    {% endfor %}
+
+
+                </div>
+			</div>
+		</div>
+	</div>
+</section>
+    <script type="text/javascript">
+    //适应手机端
+    function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+var flag = IsPC(); //true为PC端，false为手机端
+$(function () {
+    var coursede_wp = $('.coursede_wp');
+    var groupPurchase_left = $('.groupPurchase_detail_pro .left');
+    var courseco_wp = $('.courseco_wp');
+    var left = $('.groupPurchase_detail .toppro .left');
+    var picbox = $('.groupPurchase_detail .toppro .picbox');
+    var des =  $('.groupPurchase_detail .toppro .des');
+    var box = $('.group-share-box');
+    var codetail_wp = $('.codetail_wp');
+    var tb_booth = $('.tb-booth');
+    if (!flag) {
+        coursede_wp.css('width','95%');
+        groupPurchase_left.css('width','75%');
+        courseco_wp.css('width','95%');
+        left.css('width','70%');
+        picbox.css('width','30%');
+        picbox.css('height','30%');
+        des.css('width','68%');
+        box.css('left','14%');
+        box.css('bottom','46%');
+        codetail_wp.css('width','95%');
+        tb_booth.css('height','210px');
+    }
+})
+    </script>
+{% endblock %}
+
+{% block custom_js %}
+
+<script type="text/javascript">
+//收藏分享
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url 'op:fav' %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="{% url 'login' %}";
+                }else{
+                    alert(data.msg)
+                }
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+//收藏按钮样式变换
+var jsLeftBtn = document.getElementById("jsLeftBtn");
+$(document).ready(function() {
+    var btn_status = jsLeftBtn.textContent.replace(/(^\s*)|(\s*$)/g, "");//去除文字前后的空格
+    if (btn_status == "已收藏"){
+        jsLeftBtn.style.backgroundColor='#ff7800';
+    }else{
+        jsLeftBtn.style.backgroundColor='#717171';
+    }
+    $('#jsLeftBtn').on('click', function () {
+        add_fav($(this), {{ course.id }}, 1);
+        var btn_status = jsLeftBtn.textContent.replace(/(^\s*)|(\s*$)/g, "");
+        if (btn_status == "已收藏"){
+            jsLeftBtn.style.backgroundColor='#717171';
+        }else{
+            jsLeftBtn.style.backgroundColor='#ff7800';
+        }
+    });
+});
+
+$(document).ready(function() {
+	$('#jsRightBtn').on('click', function(){
+		add_fav($(this), {{ course.course_org.id }}, 2);
+	});
+});
+
+</script>
+    <script>
+		var shareUrl = '',
+            shareText = '',
+            shareDesc = '',
+            shareComment = '';
+        $(function () {
+            $(".bdsharebuttonbox a").mouseover(function () {
+                var type = $(this).attr('data-cmd'),
+                    $parent = $(this).parent('.bdsharebuttonbox'),
+                    fxurl = $parent.attr('data-url'),
+                    fxtext = $parent.attr('data-text'),
+                    fxdesc = $parent.attr('data-desc'),
+                    fxcomment = $parent.attr('data-comment');
+                switch (type){
+                    case 'tsina':
+                    case 'tqq':
+                    case 'renren':
+                            shareUrl = fxurl;
+                            shareText = fxdesc;
+                            shareDesc = '';
+                            shareComment = '';
+                        break;
+                    default :
+                            shareUrl = fxurl;
+                            shareText = fxtext;
+                            shareDesc = fxdesc;
+                            shareComment = fxcomment;
+                        break;
+                }
+            });
+        });
+        function SetShareUrl(cmd, config) {
+            if (shareUrl) {
+                config.bdUrl = "{{ SITE_URL }}" + shareUrl;
+            }
+            if(shareText){
+                config.bdText = shareText;
+            }
+            if(shareDesc){
+                config.bdDesc = shareDesc;
+            }
+            if(shareComment){
+                config.bdComment = shareComment;
+            }
+
+            return config;
+        }
+        window._bd_share_config = {
+            "common": {
+                "onBeforeClick":SetShareUrl,
+                "bdMini":"2",
+                "searchPic":"1",
+                "bdMiniList":false
+            },
+            "share": {
+                "bdSize":"16"
+            }
+        };
+		with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+{% endblock %}
